@@ -2,13 +2,9 @@ import sys
 sys.path.append('./pyvmf/src')
 from PyVMF import *
 
+# Because dealing there is too much dang string concatenation going on already
 def quote(s):
     return '"' + str(s) + '"'
-
-def find_solid_id(v, search):
-    for sol in v.get_solids():
-        if sol.id == search:
-            return sol
 
 if len(sys.argv) < 2:
     print('No file specified.')
@@ -29,8 +25,7 @@ for ent in v.get_entities(include_solid_entities=True):
     if ent.classname != 'trigger_multiple':
         continue
     
-    # This assumes the solid is the next id in the vmf, no idea if that's true lol
-    solid = find_solid_id(v, ent.id+1)
+    solid = ent.solids[0]
     center = solid.center_geo
     
     # Add entity information
