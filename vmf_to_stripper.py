@@ -17,31 +17,32 @@ modify_entries = []
 
 # Add a logic_auto at the position of the first entity
 first_center = v.get_entities(include_solid_entities=True)[0].export()[1]['origin']
-auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "_ported_by_tools_mmod_regen_triggers"', '"origin" ' + quote(' '.join([str(first_center.x), str(first_center.y), str(first_center.z)]))]
+auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "_ported_by_tools_mmod_added_triggers"', '"origin" ' + quote(' '.join([str(first_center.x), str(first_center.y), str(first_center.z)]))]
 add_entries.append(auto)
 
 for ent in v.get_entities(include_solid_entities=True):
-    # Only care about regen triggers
-    if ent.classname != 'trigger_multiple':
+    if len(ent.solids) == 0: # Not a brush entity
         continue
-    
     solid = ent.solids[0]
     center = solid.center_geo
     
     # Add entity information
-    conns = ent.connections[0].export()[1]
+    if len(ent.connections) == 0:
+        conns = []
+    else:
+        conns = ent.connections[0].export()[1]
     attrs = ent.export()
+
     add = []
     add.append('"classname" ' + quote(attrs[0]['classname']))
     add.append('"origin" ' + quote(' '.join([str(center.x), str(center.y), str(center.z)])))
-    add.append('"spawnflags" ' + quote(attrs[1]['spawnflags']))
     add.append('"targetname" ' + quote('_ported_by_tools_' + attrs[1]['targetname']))
-    add.append('"StartDisabled" ' + quote(attrs[1]['StartDisabled']))
-    add.append('"wait" ' + quote(attrs[1]['wait']))
+    for att in attrs[1]:
+        if att.lower() not in ['origin', 'targetname']:
+            add.append(quote(att) + ' ' + quote(attrs[1][att]))
     for c in conns:
         add.append(quote(c) + ' ' + quote(','.join(conns[c].split('\x1b'))))
     add_entries.append(add)
-    # print(add)
     
     # Get the bounding box for this trigger
     abs_mins = [
@@ -72,7 +73,7 @@ with open('stripper_output.cfg', 'w') as f:
             f.write('\t' + l + '\n')
         f.write('}\n\n')
     
-    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "_ported_by_tools_mmod_regen_triggers"\n\t}\n')
+    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "_ported_by_tools_mmod_added_triggers"\n\t}\n')
     f.write('\tinsert:\n\t{\n')
     for modify_entry in modify_entries:
         f.write('\t\t' + modify_entry + '\n')
