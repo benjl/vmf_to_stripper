@@ -5,7 +5,6 @@ This tool lets you add triggers to a map without recompiling it by using Lumper'
 - The triggers must be axis-aligned bounding boxes - if you need a specially shaped trigger, you will still need to recompile the map and add it in yourself  
 - The triggers must have unique targetnames  
 - The resulting triggers will not be visible in-game when using `showtriggers_toggle`. You can give an indication to their location, however, by adding the model keyvalue to the entities in the stripper config or afterwards in the map with Lumper  
-- Right now the tool only adds `trigger_multiple` although in theory any kind of brush entity could be added
 
 ## Directions
 1. Decompile the map you would like to add triggers to  
