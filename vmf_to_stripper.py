@@ -17,7 +17,7 @@ modify_entries = []
 
 # Add a logic_auto at the position of the first entity
 first_center = v.get_entities(include_solid_entities=True)[0].export()[1]['origin']
-auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "_ported_by_tools_mmod_added_triggers"', '"origin" ' + quote(' '.join([str(first_center.x), str(first_center.y), str(first_center.z)]))]
+auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "mmod_added_triggers_ported_by_tools"', '"origin" ' + quote(' '.join([str(first_center.x), str(first_center.y), str(first_center.z)]))]
 add_entries.append(auto)
 
 for ent in v.get_entities(include_solid_entities=True):
@@ -36,7 +36,7 @@ for ent in v.get_entities(include_solid_entities=True):
     add = []
     add.append('"classname" ' + quote(attrs[0]['classname']))
     add.append('"origin" ' + quote(' '.join([str(center.x), str(center.y), str(center.z)])))
-    add.append('"targetname" ' + quote('_ported_by_tools_' + attrs[1]['targetname']))
+    add.append('"targetname" ' + quote(attrs[1]['targetname'] + '_ported_by_tools'))
     for att in attrs[1]:
         if att.lower() not in ['origin', 'targetname']:
             add.append(quote(att) + ' ' + quote(attrs[1][att]))
@@ -59,9 +59,9 @@ for ent in v.get_entities(include_solid_entities=True):
     rel_maxs = [int(abs_maxs[0]-center.x), int(abs_maxs[1]-center.y), int(abs_maxs[2]-center.z)]
     
     # We modify a logic_auto previously placed by the stripper config
-    modify_entries.append('"OnMapSpawn" "' + '_ported_by_tools_' + attrs[1]["targetname"] + ',AddOutput,solid 2,0.5,1"')
-    modify_entries.append('"OnMapSpawn" "' + '_ported_by_tools_' + attrs[1]["targetname"] + ',AddOutput,mins ' + str(rel_mins[0]) + ' ' + str(rel_mins[1]) + ' ' + str(rel_mins[2]) + ',1,1"')
-    modify_entries.append('"OnMapSpawn" "' + '_ported_by_tools_' + attrs[1]["targetname"] + ',AddOutput,maxs ' + str(rel_maxs[0]) + ' ' + str(rel_maxs[1]) + ' ' + str(rel_maxs[2]) + ',1,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,solid 2,0.5,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,mins ' + str(rel_mins[0]) + ' ' + str(rel_mins[1]) + ' ' + str(rel_mins[2]) + ',1,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,maxs ' + str(rel_maxs[0]) + ' ' + str(rel_maxs[1]) + ' ' + str(rel_maxs[2]) + ',1,1"')
     
     # print(modify_entries)
 
@@ -73,7 +73,7 @@ with open('stripper_output.cfg', 'w') as f:
             f.write('\t' + l + '\n')
         f.write('}\n\n')
     
-    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "_ported_by_tools_mmod_added_triggers"\n\t}\n')
+    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "mmod_added_triggers_ported_by_tools"\n\t}\n')
     f.write('\tinsert:\n\t{\n')
     for modify_entry in modify_entries:
         f.write('\t\t' + modify_entry + '\n')
