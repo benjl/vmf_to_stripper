@@ -7,9 +7,10 @@ def quote(s):
     return '"' + str(s) + '"'
 
 if len(sys.argv) < 2:
-    print('No file specified.')
+    print('No file specified')
     sys.exit(0)
     
+print(f'Input file: {sys.argv[1]}')
 v = load_vmf(sys.argv[1])
 
 add_entries = []
@@ -20,9 +21,12 @@ first_center = v.get_entities(include_solid_entities=True)[0].export()[1]['origi
 auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "mmod_added_triggers_ported_by_tools"', '"origin" ' + quote(' '.join([str(first_center.x), str(first_center.y), str(first_center.z)]))]
 add_entries.append(auto)
 
+brush_ents = 0
+
 for ent in v.get_entities(include_solid_entities=True):
     if len(ent.solids) == 0: # Not a brush entity
         continue
+    brush_ents += 1
     solid = ent.solids[0]
     center = solid.center_geo
     
@@ -64,7 +68,9 @@ for ent in v.get_entities(include_solid_entities=True):
     modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,maxs ' + str(rel_maxs[0]) + ' ' + str(rel_maxs[1]) + ' ' + str(rel_maxs[2]) + ',1,1"')
     
     # print(modify_entries)
-
+    
+print(f'{brush_ents} brush entities found')
+    
 # Generate stripper config
 with open('stripper_output.cfg', 'w') as f:
     for add_entry in add_entries:
@@ -78,3 +84,5 @@ with open('stripper_output.cfg', 'w') as f:
     for modify_entry in modify_entries:
         f.write('\t\t' + modify_entry + '\n')
     f.write('\t}\n}')
+
+print('Wrote config to stripper_output.cfg')

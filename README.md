@@ -10,7 +10,7 @@ This tool lets you add triggers to a map without recompiling it by using Lumper'
 1. Decompile the map you would like to add triggers to  
 2. In hammer, add your triggers to the map  
 3. Select all your triggers and press "Create Prefab" on the right hand side  
-4. Run vmf_to_stripper in the command line with the new vmf you have created as the argument, something like this: `python vmf_to_stripper.py extra_added_triggers.vmf`  
+4. Drag your vmf file onto start.bat, or run vmf_to_stripper in the command line with the new vmf you have created as the argument, something like this: `python vmf_to_stripper.py extra_added_triggers.vmf`  
 5. Open the bsp of your map in [Lumper](https://github.com/momentum-mod/lumper)
 6. Go to Jobs > + > Stripper (File) and select `stripper_output.cfg` from the vmf_to_stripper directory
 7. Press Run at the bottom of the left hand column
