@@ -6,6 +6,10 @@ This tool lets you add triggers to a map without recompiling it by using Lumper'
 - The triggers must have unique targetnames  
 - The resulting triggers will not be visible in-game when using `showtriggers_toggle`. You can give an indication to their location, however, by adding the model keyvalue to the entities in the stripper config or afterwards in the map with Lumper  
 
+## Installation:
+You will need [Python 3](https://www.python.org/downloads/) installed to run the script.  
+Then, in a directory of your choice, run `git clone https://github.com/benjl/vmf_to_stripper.git --recursive`
+
 ## Directions
 1. Decompile the map you would like to add triggers to  
 2. In hammer, add your triggers to the map  
