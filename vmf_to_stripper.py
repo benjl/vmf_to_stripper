@@ -52,7 +52,8 @@ for ent in v.get_entities(include_solid_entities=True):
         if att.lower() not in ['origin', 'targetname']:
             add.append(quote(att) + ' ' + quote(attrs[1][att]))
     for c in conns:
-        add.append(quote(c) + ' ' + quote(conns[c].replace('\x1b', ',')))
+        output,info = conns[c].split(',')
+        add.append(quote(output) + ' ' + quote(info.replace('\x1b', ',')))
     add_entries.append(add)
     
     # Get the bounding box for this trigger

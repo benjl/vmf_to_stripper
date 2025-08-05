@@ -5,7 +5,6 @@ This tool lets you add triggers to a map without recompiling it by using Lumper'
 - The triggers must be axis-aligned bounding boxes - if you need a specially shaped trigger, you will still need to recompile the map and add it in yourself  
 - The triggers must have unique targetnames  
 - The resulting triggers will not be visible in-game when using `showtriggers_toggle`. You can give an indication to their location, however, by adding the model keyvalue to the entities in the stripper config or afterwards in the map with Lumper
-- Triggers can only have one output of each name (due to the way PyVMF loads VMFs), i.e. one OnStartTouch, one OnEndTouch  
 
 ## Installation:
 You will need [Python 3](https://www.python.org/downloads/) installed to run the script.  
