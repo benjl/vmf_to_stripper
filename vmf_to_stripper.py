@@ -24,7 +24,7 @@ modify_entries = []
 
 # Add a logic_auto at the position of the first entity
 first_center = v.get_entities(include_solid_entities=True)[0].export()[1]['origin']
-auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "mmod_added_triggers_ported_by_tools"', '"origin" ' + quote(vtx_to_str(first_center))]
+auto = ['"classname" "logic_auto"', '"spawnflags" "0"', '"targetname" "mmod_added_triggers"', '"_ported_by_tools" "vmf_to_stripper"', '"origin" ' + quote(vtx_to_str(first_center))]
 add_entries.append(auto)
 
 brush_ents = 0
@@ -47,7 +47,8 @@ for ent in v.get_entities(include_solid_entities=True):
     add = []
     add.append('"classname" ' + quote(attrs[0]['classname']))
     add.append('"origin" ' + quote(vtx_to_str(center)))
-    add.append('"targetname" ' + quote(attrs[1]['targetname'] + '_ported_by_tools'))
+    add.append('"targetname" ' + quote(attrs[1]['targetname']))
+    add.append('"_ported_by_tools" "vmf_to_stripper"')
     for att in attrs[1]:
         if att.lower() not in ['origin', 'targetname']:
             add.append(quote(att) + ' ' + quote(attrs[1][att]))
@@ -69,9 +70,9 @@ for ent in v.get_entities(include_solid_entities=True):
        
     # This is icky, but currently the only known way to use mins and maxs on most triggers
     # is to add these inputs to a logic_auto for each trigger you want to add
-    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,solid 2,0.5,1"')
-    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,mins ' + list_to_str(rel_mins) + ',1,1"')
-    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + '_ported_by_tools,AddOutput,maxs ' + list_to_str(rel_maxs) + ',1,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + ',AddOutput,solid 2,0.5,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + ',AddOutput,mins ' + list_to_str(rel_mins) + ',1,1"')
+    modify_entries.append('"OnMapSpawn" "' + attrs[1]["targetname"] + ',AddOutput,maxs ' + list_to_str(rel_maxs) + ',1,1"')
 
 print(f'{brush_ents} brush entities found')
     
@@ -83,7 +84,7 @@ with open('stripper_output.cfg', 'w') as f:
             f.write('\t' + kv + '\n')
         f.write('}\n\n')
     
-    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "mmod_added_triggers_ported_by_tools"\n\t}\n')
+    f.write('modify:\n{\n\tmatch:\n\t{\n\t\t"classname" "logic_auto"\n\t\t"targetname" "mmod_added_triggers"\n\t}\n')
     f.write('\tinsert:\n\t{\n')
     for modify_entry in modify_entries:
         f.write('\t\t' + modify_entry + '\n')
